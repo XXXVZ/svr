@@ -63,29 +63,31 @@ export function BookingForm({ status, onSubmit }: BookingFormProps) {
         />
       </FormField>
 
-      <FormField label='Дата' htmlFor='date' error={errors.date?.message}>
-        <input
-          id='date'
-          type='date'
-          className={inputClass(!!errors.date)}
-          {...register('date', { validate: (v) => validateDate(v) ?? true })}
-        />
-      </FormField>
+      <div className='grid gap-4 sm:grid-cols-2'>
+        <FormField label='Дата' htmlFor='date' error={errors.date?.message}>
+          <input
+            id='date'
+            type='date'
+            className={inputClass(!!errors.date)}
+            {...register('date', { validate: (v) => validateDate(v) ?? true })}
+          />
+        </FormField>
 
-      <FormField label='Время' htmlFor='time' error={errors.time?.message}>
-        <select
-          id='time'
-          className={inputClass(!!errors.time)}
-          {...register('time', { validate: (v) => validateTime(v) ?? true })}
-        >
-          <option value=''>Выберите время</option>
-          {TIME_SLOTS.map((slot) => (
-            <option key={slot} value={slot}>
-              {slot}
-            </option>
-          ))}
-        </select>
-      </FormField>
+        <FormField label='Время' htmlFor='time' error={errors.time?.message}>
+          <select
+            id='time'
+            className={inputClass(!!errors.time)}
+            {...register('time', { validate: (v) => validateTime(v) ?? true })}
+          >
+            <option value=''>Выберите время</option>
+            {TIME_SLOTS.map((slot) => (
+              <option key={slot} value={slot}>
+                {slot}
+              </option>
+            ))}
+          </select>
+        </FormField>
+      </div>
 
       <FormField
         label='Количество гостей'
