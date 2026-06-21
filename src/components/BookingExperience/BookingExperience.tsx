@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
 import type { BookingFormData, BookingStatus } from '@/types/booking';
 import { BookingForm } from '../BookingForm/BookingForm';
 import { ConfirmationScreen } from '../ConfirmationScreen/ConfirmationScreen';
@@ -21,9 +22,29 @@ export function BookingExperience() {
     setStatus('idle');
   }
 
-  if (status === 'success' && booking) {
-    return <ConfirmationScreen booking={booking} onReset={handleReset} />;
-  }
-
-  return <BookingForm status={status} onSubmit={handleSubmit} />;
+  return (
+    <AnimatePresence mode='wait'>
+      {status === 'success' && booking ? (
+        <motion.div
+          key='confirmation'
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.25 }}
+        >
+          <ConfirmationScreen booking={booking} onReset={handleReset} />
+        </motion.div>
+      ) : (
+        <motion.div
+          key='form'
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.25 }}
+        >
+          <BookingForm status={status} onSubmit={handleSubmit} />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 }
