@@ -19,7 +19,7 @@ export function ConfirmationScreen({
   onReset,
 }: ConfirmationScreenProps) {
   return (
-    <section className='flex flex-col items-center gap-4 text-center'>
+    <section className='flex flex-col items-center gap-4 text-center animate-fadi-in'>
       <h2 className='text-xl font-semibold'>Столик забронирован</h2>
 
       <dl className='w-full max-w-xs text-left'>
