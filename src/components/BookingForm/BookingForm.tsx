@@ -11,6 +11,7 @@ import {
   validateGuests,
 } from '@/utils/validations';
 import { FormField } from '../FormField/FormField';
+import { Spinner } from '../Spinner/Spinner';
 
 interface BookingFormProps {
   status: BookingStatus;
@@ -107,9 +108,10 @@ export function BookingForm({ status, onSubmit }: BookingFormProps) {
       <button
         type='submit'
         disabled={isLoading}
-        className='rounded-md bg-accent px-4 py-2 font-medium text-white disabled:opacity-60'
+        className='flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 font-medium text-white disabled:opacity-60'
       >
-        Забронировать
+        {isLoading && <Spinner />}
+        {isLoading ? 'Бронирую…' : 'Забронировать'}
       </button>
     </form>
   );
