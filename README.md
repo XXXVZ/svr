@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Тестовое задание
 
-## Getting Started
+## Страница онлайн-бронирования столика в ресторане.
+Форма бронирования с валидацией, имитацией отправки и экраном подтверждения. Адаптивная вёрстка под мобильные устройства и десктоп.
 
-First, run the development server:
+## Стек
+- **Next.js 16** (App Router) + **React 19**
+- **TypeScript**
+- **Tailwind CSS v4**
+- **react-hook-form**
+- **Framer Motion**
+- **Vitest**
+- **ESLint + Prettier**
 
+## Запуск локально
 ```bash
+git clone https://github.com/XXXVZ/svr.git
+cd svr
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Открыть [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Скрипты
+| Команда                | Назначение                       |
+| ---------------------- | -------------------------------- |
+| `npm run dev`          | dev-сервер                       |
+| `npm run build`        | прод-сборка                      |
+| `npm run start`        | запуск прод-сборки               |
+| `npm run lint`         | проверка ESLint                  |
+| `npm run format`       | форматирование Prettier          |
+| `npm run format:check` | проверка форматирования (для CI) |
+| `npm run test`         | тесты в watch-режиме             |
+| `npm run test:run`     | разовый прогон тестов            |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Архитектурные решения
+- **Стейт-машина** `idle-loading-success`
+  в `BookingExperience`. Форма и экран подтверждения получают данные
+  через props и отдают события через колбэки. Это снижает
+  связанность и упрощает тестирование.
+- **Валидация через чистые функции.** Правила вынесены в `utils/validations.ts` без зависимости
+  от React, поэтому покрыты юнит-тестами в изоляции и переиспользуются в react-hook-form
+  через `validate`. Телефон нормализуется перед проверкой, дата сравнивается в локальной зоне
+  (без сдвига на день из-за UTC).
+- **Декомпозиция.** `FormField`, `SubmitButton`, `Spinner` вынесены как
+  переиспользуемые примитивы, чтобы убрать дублирование. А специфичные куски (строки для информации)
+  оставлены локально.
+- **Типобезопасность.** Props, состояние и обработчики типизированы. Общие интерфейсы находятся в `types/`.
+- **Стили.** Tailwind v4 с токенами фирменной палитры (`@theme`).
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Что бы доделал при наличии времени
+- Интеграционные тесты компонентов. Сабмит, показ ошибок, переход на подтверждение.
+- Доступность. Перенос фокуса на экран подтверждения, `aria-live` для статуса загрузки.
+- Замена `setTimeout` на реальный запрос или создать мок даныне и через таймаут запрашивать.
+- Локализация дат и текстов, ограничения `min`/`max` на инпуте даты.
